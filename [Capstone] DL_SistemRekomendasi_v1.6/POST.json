@@ -1,0 +1,12 @@
+// Request Body (Dikirim dari Frontend ke Backend)
+// Tim Frontend harus mengirimkan data profil pengguna dengan struktur key seperti ini. 
+// Pastikan Anda mengingatkan mereka bahwa kolom databases boleh dikirim sebagai string kosong ("none") jika mahasiswa tidak mengisinya.
+
+{
+  "years_code": 3.5,
+  "education_level": 2,
+  "all_skills": "html/css javascript react tailwind css python sql",
+  "tools": "visual studio code figma",
+  "databases": "none"
+}
+

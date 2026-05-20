@@ -1,0 +1,24 @@
+// Response Body (Diterima Frontend dari Backend)
+// Setelah backend memproses data melalui model career_recsys_model_custom.keras dan Gemini API,
+//  backend akan mengembalikan struktur JSON seperti ini untuk di-render (ditampilkan) oleh UI Frontend:
+
+{
+  "status": "success",
+  "data": {
+    "top_recommendations": [
+      {
+        "career": "Frontend Developer",
+        "score": 85.2
+      },
+      {
+        "career": "UX Designer",
+        "score": 12.5
+      },
+      {
+        "career": "Full Stack Developer",
+        "score": 6.8
+      }
+    ],
+    "ai_roadmap": "Berikut adalah 3 langkah taktis untuk menjadi Frontend Developer:\n\n* **Kuasai State Management:** Pelajari Redux atau Context API untuk React.\n* **Pahami Web Performance:** Fokus pada optimasi *rendering* dan *Core Web Vitals*.\n* **Eksplorasi Framework Baru:** Mulai pelajari Next.js untuk kebutuhan *Server-Side Rendering* (SSR)."
+  }
+}
