@@ -12,12 +12,12 @@ DATA_PATH = Path(__file__).parent.parent.parent / "Data Wrangling" / "dataset_so
 # Verifikasi file ada
 if not DATA_PATH.exists():
     raise FileNotFoundError(
-        f"❌ File tidak ditemukan: {DATA_PATH}\n"
+        f"[ERROR] File tidak ditemukan: {DATA_PATH}\n"
         f"Pastikan dataset_so_smote_balanced_injected.csv sudah di lokasi yang benar.\n"
         f"Path yang dicari: {DATA_PATH.absolute()}"
     )
 else:
-    print(f"✅ Dataset ditemukan: {DATA_PATH.absolute()}")
+    print(f"[OK] Dataset ditemukan: {DATA_PATH.absolute()}")
 
 EDU_MAP = {
     0.0: "None/Self-taught",
