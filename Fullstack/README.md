@@ -4,7 +4,7 @@ Aplikasi web sistem rekomendasi karir mahasiswa IT berbasis **Deep Learning** da
 
 ---
 
-## 🚀 Live Demo
+## 🚀 Live Demo (Railway)
 
 🔗 **https://careermatch.up.railway.app**
 
