@@ -240,5 +240,4 @@ Build dan start otomatis via `Dockerfile` dan `start.sh`.
 
 ---
 
-**Role:** Full-Stack Web Developer  
-**ID:** CFCC009D6Y2475
+
