@@ -224,7 +224,6 @@ Build dan start otomatis via `Dockerfile` dan `start.sh`.
 | `ai_service.py` | Migrasi Gemini SDK: `google.generativeai` → `google-genai` (`from google import genai`) |
 | `ai_service.py` | Model load dibungkus try/except dengan error message informatif |
 | `ai_service.py` | Tambah `compile=False` untuk bypass error quantization |
-| `ai_service.py` | Prompt Gemini diperbarui agar tidak ada kalimat pembuka basa-basi |
 | `server.js` | Validasi input `years_code` (0–50) dan `education_level` (0–3) |
 | `server.js` | Error handling spesifik ECONNREFUSED ketika FastAPI tidak berjalan |
 | `server.js` | INSERT DB pakai variabel parsed bukan raw payload |
