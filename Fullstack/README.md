@@ -1,4 +1,4 @@
-# 🌐 CareerMatch — Full-Stack Web Application
+# 🌐 CareerMatch — Web Application
 
 Aplikasi web sistem rekomendasi karir mahasiswa IT berbasis **Deep Learning** dan **Generative AI**. Dibangun dengan React + Vite (frontend), Express.js (backend), FastAPI + TensorFlow (AI service), dan PostgreSQL (database).
 
