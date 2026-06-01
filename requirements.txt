@@ -1,0 +1,116 @@
+# =====================================================================
+# Sistem Rekomendasi Karir IT — Unified Python Dependencies
+# ---------------------------------------------------------------------
+# Gabungan dependencies dari seluruh learn path:
+#   1. Data Science  (Data Wrangling + Streamlit Dashboard)
+#   2. AI Engineer   (TensorFlow Model + Gemini API)
+#   3. Fullstack     (FastAPI AI Service)
+#
+# Install   : pip install -r requirements.txt
+# Python     : 3.11+ (direkomendasikan)
+# Catatan    : Untuk dependencies Node.js (frontend & backend Express),
+#              gunakan `npm install` di masing-masing folder Fullstack.
+# =====================================================================
+
+# ----------------------------------------------------------------
+# [1] DATA SCIENCE — Data Wrangling & Streamlit Dashboard
+# ----------------------------------------------------------------
+streamlit==1.57.0
+pandas==2.3.3
+plotly==6.7.0
+
+# ----------------------------------------------------------------
+# [2] CORE NUMERIC — dipakai bersama oleh semua learn path
+# ----------------------------------------------------------------
+numpy==1.26.4
+
+# ----------------------------------------------------------------
+# [3] AI ENGINEER & FULLSTACK — Deep Learning (TensorFlow / Keras)
+# ----------------------------------------------------------------
+tensorflow==2.21.0
+keras==3.14.1
+h5py==3.14.0
+ml_dtypes==0.5.4
+flatbuffers==25.12.19
+gast==0.7.0
+google-pasta==0.2.0
+opt_einsum==3.4.0
+optree==0.19.1
+libclang==18.1.1
+astunparse==1.6.3
+termcolor==3.3.0
+wrapt==1.14.2
+grpcio==1.80.0
+Markdown==3.10.2
+Werkzeug==3.1.8
+namex==0.1.0
+absl-py==2.4.0
+tensorflow-io-gcs-filesystem==0.31.0
+
+# ----------------------------------------------------------------
+# [4] GENERATIVE AI — Google Gemini API
+# ----------------------------------------------------------------
+google-genai==2.4.0
+google-api-python-client==2.196.0
+google-auth==2.53.0
+google-auth-httplib2==0.4.0
+google-auth-oauthlib==1.4.0
+
+# ----------------------------------------------------------------
+# [5] BACKEND API — FastAPI + Uvicorn (Fullstack AI Service)
+# ----------------------------------------------------------------
+fastapi==0.136.1
+uvicorn==0.47.0
+starlette==1.0.1
+pydantic==2.13.4
+pydantic_core==2.46.4
+annotated-types==0.7.0
+typing-inspection==0.4.2
+python-dotenv==1.2.2
+
+# ----------------------------------------------------------------
+# [6] HTTP / NETWORKING & UTILITIES
+# ----------------------------------------------------------------
+anyio==4.13.0
+sniffio==1.3.1
+h11==0.16.0
+httpcore==1.0.9
+httpx==0.28.1
+httplib2==0.31.2
+requests==2.34.2
+requests-oauthlib==2.0.0
+oauthlib==3.3.1
+urllib3==2.7.0
+certifi==2026.4.22
+charset-normalizer==3.4.7
+idna==3.15
+websockets==16.0
+uritemplate==4.2.0
+tenacity==9.1.4
+
+# ----------------------------------------------------------------
+# [7] SECURITY / CRYPTO
+# ----------------------------------------------------------------
+cryptography==48.0.0
+cffi==2.0.0
+pycparser==3.0
+pyasn1==0.6.3
+pyasn1_modules==0.4.2
+
+# ----------------------------------------------------------------
+# [8] SUPPORTING LIBRARIES
+# ----------------------------------------------------------------
+click==8.4.1
+distro==1.9.0
+markdown-it-py==4.2.0
+mdurl==0.1.2
+MarkupSafe==3.0.3
+packaging==26.2
+psutil==7.2.2
+Pygments==2.20.0
+pyparsing==3.3.2
+python-dateutil==2.9.0.post0
+rich==15.0.0
+six==1.17.0
+tqdm==4.67.3
+typing_extensions==4.15.0
