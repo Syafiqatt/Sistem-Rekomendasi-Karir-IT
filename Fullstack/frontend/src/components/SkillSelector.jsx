@@ -129,7 +129,8 @@ let cachedVocab = null
 async function fetchVocab() {
   if (cachedVocab) return cachedVocab
   const r = await fetch('/api/vocabulary')
-  const data = await r.json()
+  const json = await r.json()
+  const data = json.data 
   const keys = Object.keys(data)
   cachedVocab = {
     skills: data['text_vectorization_3'] || [],
