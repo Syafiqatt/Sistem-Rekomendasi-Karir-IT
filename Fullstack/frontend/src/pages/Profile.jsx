@@ -47,9 +47,9 @@ function Profile() {
     localStorage.setItem('profileData', JSON.stringify({
       years_code: parseFloat(form.years_code) || 0,
       education_level: parseInt(form.education_level) || 0,
-      all_skills: form.all_skills.join(' '),
-      tools: form.tools.join(' '),
-      databases: form.databases.join(' '),
+      all_skills: form.all_skills.join(' ').trim(),
+      tools: form.tools.join(' ').trim(),
+      databases: form.databases.join(' ').trim(),
     }))
     navigate('/loading')
   }
@@ -71,7 +71,7 @@ function Profile() {
   return (
     <div className="flex min-h-screen bg-gray-100">
       <Sidebar />
-      <main className="flex-1 p-6 pl-20 md:pl-6">
+      <main className="flex-1 p-6 pb-24">
         <div className="flex justify-between items-center mb-5">
           <div>
             <h1 className="text-xl font-semibold text-gray-800">Build Your Profile</h1>
