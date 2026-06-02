@@ -366,7 +366,7 @@ Buat file `.env` di dalam folder `Fullstack/backend/`:
 ```env
 GEMINI_API_KEY=your_gemini_api_key_here
 DATABASE_URL=postgresql://user:password@localhost:5432/careermatchdb
-JWT_SECRET=your_random_secret_key_here
+
 ```
 
 ---
