@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 
 const NAV = [
   {
-    label: 'Dashboard', 
+    label: 'Dashboard',
     path: '/',
     icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />,
   },
@@ -19,7 +19,7 @@ const NAV = [
   },
   {
     label: 'Settings',
-    path: null,
+    path: '/settings',
     icon: <>
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -30,25 +30,20 @@ const NAV = [
 function Sidebar() {
   const navigate = useNavigate()
   const location = useLocation()
-  const [collapsed, setCollapsed] = useState(() => {
-  return localStorage.getItem('sidebarCollapsed') === 'true'
-})
+  const [collapsed, setCollapsed] = useState(() => localStorage.getItem('sidebarCollapsed') === 'true')
 
-const toggle = (val) => {
-  setCollapsed(val)
-  localStorage.setItem('sidebarCollapsed', String(val))
-}
+  const toggle = (val) => {
+    setCollapsed(val)
+    localStorage.setItem('sidebarCollapsed', String(val))
+  }
 
   return (
     <>
-      {/* Sidebar */}
-      <aside className={`${collapsed ? 'w-16' : 'w-52'} bg-gray-900 flex flex-col py-5 fixed h-full z-20 transition-all duration-300`}>
-
-        {/* LOGO + TOGGLE */}
+      {/* DESKTOP SIDEBAR */}
+      <aside className={`${collapsed ? 'w-16' : 'w-52'} bg-gray-900 hidden md:flex flex-col py-5 fixed h-full z-20 transition-all duration-300`}>
         <div className={`flex items-center ${collapsed ? 'justify-center px-0' : 'justify-between px-5'} pb-4 border-b border-white/10 mb-4`}>
           {!collapsed && (
             <div className="flex items-center gap-2">
-              {/* Logo icon */}
               <div className="w-7 h-7 rounded-lg bg-blue-600 flex items-center justify-center flex-shrink-0">
                 <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -60,7 +55,6 @@ const toggle = (val) => {
               </div>
             </div>
           )}
-
           {collapsed && (
             <div className="w-7 h-7 rounded-lg bg-blue-600 flex items-center justify-center">
               <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -68,8 +62,6 @@ const toggle = (val) => {
               </svg>
             </div>
           )}
-
-          {/* Toggle button */}
           {!collapsed && (
             <button onClick={() => toggle(true)} className="text-white/30 hover:text-white transition p-1 rounded-md hover:bg-white/5">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -79,7 +71,6 @@ const toggle = (val) => {
           )}
         </div>
 
-        {/* Expand button */}
         {collapsed && (
           <button onClick={() => toggle(false)} className="mx-auto mb-3 text-white/30 hover:text-white transition p-1.5 rounded-md hover:bg-white/5">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -88,7 +79,6 @@ const toggle = (val) => {
           </button>
         )}
 
-        {/* NAV */}
         <nav className={`flex flex-col gap-1 ${collapsed ? 'px-2' : 'px-3'}`}>
           {NAV.map(({ label, path, icon }) => {
             const active = location.pathname === path
@@ -107,21 +97,46 @@ const toggle = (val) => {
           })}
         </nav>
 
-        {/* USER */}
         <div className={`mt-auto pt-3 border-t border-white/10 ${collapsed ? 'px-2' : 'px-4'}`}>
           <div className={`flex items-center ${collapsed ? 'justify-center' : 'gap-3'}`}>
-            <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">U</div>
+            <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
+              {(localStorage.getItem('username') || 'U')[0].toUpperCase()}
+            </div>
             {!collapsed && (
-              <div>
-                <p className="text-white text-sm font-medium">User</p>
+              <div className="flex-1 min-w-0">
+                <p className="text-white text-sm font-medium truncate">{localStorage.getItem('username') || 'User'}</p>
+                <button onClick={() => { localStorage.removeItem('token')
+                  localStorage.removeItem('username')
+                  window.location.href = '/login'}}
+                  className="text-white/30 hover:text-white text-xs transition">Logout</button>
               </div>
             )}
           </div>
         </div>
       </aside>
 
-      {/* Spacer */}
+      {/* DESKTOP SPACER */}
       <div className={`${collapsed ? 'w-16' : 'w-52'} flex-shrink-0 transition-all duration-300 hidden md:block`} />
+
+      {/* MOBILE BOTTOM NAV */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-white/10 z-20 flex items-center justify-around px-2 py-2">
+        {NAV.map(({ label, path, icon }) => {
+          const active = location.pathname === path
+          return (
+            <button key={label} onClick={() => path && navigate(path)}
+              className={`flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl transition-all
+                ${active ? 'text-white' : 'text-white/40 hover:text-white'}`}>
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {icon}
+              </svg>
+              <span className="text-[10px] font-medium">{label}</span>
+            </button>
+          )
+        })}
+      </nav>
+
+      {/* MOBILE BOTTOM PADDING */}
+      <div className="md:hidden h-16 flex-shrink-0" />
     </>
   )
 }
