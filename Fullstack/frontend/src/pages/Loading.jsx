@@ -46,7 +46,10 @@ export default function Loading() {
     }, 800)
 
     // Hit API
-    axios.post('/api/analyze', profileData)
+    axios.post('/api/analyses', profileData, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      timeout: 60000
+    })
       .then(res => {
         localStorage.setItem('resultData', JSON.stringify(res.data.data))
         clearInterval(interval)
@@ -71,7 +74,7 @@ export default function Loading() {
   return (
     <div className="flex min-h-screen bg-gray-100">
       <Sidebar />
-      <main className="flex-1 flex items-center justify-center p-6 pl-20 md:pl-6">
+      <main className="flex-1 flex items-center justify-center p-6">
         <div className="bg-white rounded-2xl shadow-sm p-10 w-full max-w-md text-center">
 
           <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 transition-all duration-500 ${done ? 'bg-emerald-500 scale-110' : 'bg-blue-600'}`}>
