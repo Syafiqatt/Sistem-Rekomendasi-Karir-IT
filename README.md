@@ -378,7 +378,6 @@ Aplikasi di-deploy ke **Railway** menggunakan Docker. Environment variables yang
 ```env
 GEMINI_API_KEY=your_key
 DATABASE_URL=your_postgresql_url
-JWT_SECRET=your_secret_key
 NODE_ENV=production
 ```
 
