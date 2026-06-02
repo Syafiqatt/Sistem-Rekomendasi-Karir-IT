@@ -43,6 +43,7 @@ Proyek ini merupakan **capstone project** yang mengintegrasikan tiga disiplin se
 - **📊 Dataset Skala Besar & Seimbang** — Dilatih dengan **139.079 baris data** seimbang (via **SMOTE**) untuk **18 rumpun karir IT** spesifik, bersumber dari Stack Overflow Developer Survey.
 - **🎲 Natural Probability Distribution** — Menerapkan **Custom Loss Function (Label Smoothing: 0.15)** untuk meredam *network overconfidence*, menghasilkan distribusi probabilitas Top 3 yang logis & humanis.
 - **🛡️ Fail-Safe Input Sanitization** — Proteksi otomatis terhadap error pembagian nol (`NaN`) saat kolom opsional (mis. `databases`) dikosongkan.
+- **🔐 Autentikasi** — Sistem login & register, seluruh data analisis terisolasi per user.
 - **🤖 Generative AI Relay Coaching** — Hasil inferensi diteruskan ke **Gemini API** untuk merangkai langkah taktis *learning roadmap* berbahasa Indonesia.
 
 ---
@@ -73,7 +74,7 @@ Proyek ini merupakan **capstone project** yang mengintegrasikan tiga disiplin se
               ▼                        ▼                        ▼
    ┌──────────────────┐   ┌──────────────────────┐   ┌──────────────────┐
    │  TensorFlow      │   │   Google Gemini API   │   │   PostgreSQL     │
-   │  Model (.keras)  │   │   (Roadmap Generator) │   │  (Riwayat)       │
+   │  Model (.keras)  │   │   (Roadmap Generator) │   │  (Users & Data)  │
    └──────────────────┘   └──────────────────────┘   └──────────────────┘
 ```
 
@@ -88,23 +89,25 @@ Ketiga folder learn path bekerja secara berurutan membentuk satu alur data:
 │  DATA SCIENCE   │ ──▶ │  AI ENGINEER    │ ──▶ │   FULLSTACK     │
 ├─────────────────┤     ├─────────────────┤     ├─────────────────┤
 │ • Data Cleaning │     │ • Train model   │     │ • Web UI        │
-│ • EDA           │     │   (.keras)      │     │ • REST API      │
-│ • SMOTE Balance │     │ • Inferensi     │     │ • DB Riwayat    │
-│ • Dashboard     │     │ • Gemini relay  │     │ • Deploy        │
-└─────────────────┘     └─────────────────┘     └─────────────────┘
-   dataset bersih          model + service          produk akhir
+│ • EDA           │     │   (.keras)      │     │ • RESTful API   │
+│ • SMOTE Balance │     │ • Inferensi     │     │ • Auth          │
+│ • Dashboard     │     │ • Gemini relay  │     │ • DB per user   │
+└─────────────────┘     └─────────────────┘     │ • Deploy        │
+   dataset bersih          model + service       └─────────────────┘
+                                                    produk akhir
 ```
 
 ### Alur Aplikasi (Runtime)
 
-1. User mengisi profil (Basic Info → Skills & Tools → Databases).
-2. Klik **Analyze** → tampil halaman *Loading*.
-3. Express menerima request → memvalidasi input (`years_code` 0–50, `education_level` 0–3).
-4. Express forward ke FastAPI → **TensorFlow** melakukan prediksi.
-5. **Gemini API** men-generate roadmap berdasarkan karir Top 1.
-6. Hasil disimpan ke **PostgreSQL**.
-7. Frontend menampilkan **Top 3 karir + AI Roadmap**.
-8. Dashboard menampilkan riwayat analisis.
+1. User **register/login** → sesi dimulai.
+2. User mengisi profil (Basic Info → Skills & Tools → Databases).
+3. Klik **Analyze** → tampil halaman *Loading*.
+4. Express menerima request → validasi autentikasi + validasi input (`years_code` 0–50, `education_level` 0–3).
+5. Express forward ke FastAPI → **TensorFlow** melakukan prediksi.
+6. **Gemini API** men-generate roadmap berdasarkan karir Top 1.
+7. Hasil disimpan ke **PostgreSQL** (terisolasi per user).
+8. Frontend menampilkan **Top 3 karir + AI Roadmap**.
+9. Dashboard menampilkan statistik & riwayat analisis user.
 
 ---
 
@@ -139,20 +142,33 @@ Sistem-Rekomendasi-Karir-IT/
     ├── Dockerfile                  # Build image untuk deployment
     ├── start.sh                    # Entry point (jalankan FastAPI + Express)
     ├── backend/
-    │   ├── server.js               # Express server (Port 8080)
+    │   ├── server.js               # Express server (Port 8080) — RESTful API + Autentikasi
     │   ├── ai_api.py               # FastAPI wrapper (Port 8000)
     │   ├── ai_service.py           # Logika inferensi + Gemini
     │   ├── career_recsys_model_custom.keras        # Model (copy dari AI Engineer)
-    │   ├── requirements.txt        # Deps Python khusus Docker build (subset dari root)
+    │   ├── requirements.txt        # Deps Python khusus Docker build
+    │   ├── package-lock.json
     │   └── package.json            # Dependencies Node backend
     └── frontend/
         ├── index.html
         ├── vite.config.js
+        ├── eslint.config.js
+        ├── package-lock.json
         ├── package.json            # Dependencies Node frontend
+        ├── public/
+        │   ├── favicon.svg
+        │   └── icons.svg
         └── src/
-            ├── App.jsx
-            ├── pages/              # Dashboard, Profile, Loading, Result
-            └── components/         # Sidebar, SkillSelector
+            ├── App.jsx             # Routing utama + PrivateRoute (JWT guard)
+            ├── App.css
+            ├── index.css
+            ├── main.jsx
+            ├── assets/
+            │   └── hero.png
+            ├── components/
+            │   ├── Sidebar.jsx         # Navigasi utama + logout
+            │   └── SkillSelector.jsx   # Input skill dengan autocomplete vocabulary
+            └── pages/              # Dashboard, Profile, Loading, Result, Login, Settings
 ```
 
 ---
@@ -178,7 +194,7 @@ Proyek telah melampaui seluruh ambang batas minimum kriteria pengembangan:
 | **AI / Model** | Python 3.11, TensorFlow 2.21, Keras 3.x |
 | **Generative AI** | Google Gemini API (`google-genai`) |
 | **Frontend** | React 19, Vite 8, Tailwind CSS v4, React Router v7, React Markdown |
-| **Backend** | Node.js 20, Express.js v5 |
+| **Backend** | Node.js 20, Express.js v5, bcryptjs, jsonwebtoken |
 | **AI Service** | FastAPI, Uvicorn, Pydantic |
 | **Database** | PostgreSQL |
 | **Deployment** | Railway (Docker) |
@@ -206,8 +222,6 @@ cd Sistem-Rekomendasi-Karir-IT
 ```
 
 ### 2. Install Dependencies Python (Terpusat)
-
-Seluruh dependensi Python untuk **ketiga learn path** sudah digabung dalam satu file di root:
 
 ```bash
 # (Disarankan) buat virtual environment
@@ -249,12 +263,11 @@ Buka **http://localhost:8501**
 
 ### B. Eksplorasi / Training Model (AI Engineer)
 
-Buka notebook training untuk melihat proses pembuatan model:
 ```bash
 cd "AI Engineer"
 jupyter notebook "[Capstone]DL_Sistem_Rekomendasi_v1_6.ipynb"
 ```
-Untuk uji inferensi langsung (membutuhkan `GEMINI_API_KEY` di environment):
+Untuk uji inferensi langsung:
 ```bash
 python ai_service.py
 ```
@@ -288,10 +301,13 @@ Buka **http://localhost:5173**
 
 | Method | Endpoint | Fungsi |
 |---|---|---|
-| `POST` | `/api/analyze` | Submit profil → rekomendasi karir + roadmap |
-| `GET` | `/api/history` | 10 riwayat analisis terakhir |
-| `GET` | `/api/history/:id` | Detail satu riwayat |
-| `DELETE` | `/api/history` | Hapus semua riwayat |
+| `POST` | `/api/register` | Registrasi akun baru |
+| `POST` | `/api/login` | Login & mendapatkan token JWT |
+| `POST` | `/api/analyses` | Submit profil → rekomendasi karir + roadmap |
+| `GET` | `/api/analyses` | 10 riwayat analisis terakhir milik user |
+| `GET` | `/api/analyses/:id` | Detail satu riwayat analisis |
+| `DELETE` | `/api/analyses` | Hapus semua riwayat milik user |
+| `PATCH` | `/api/user` | Update username atau password |
 | `GET` | `/api/vocabulary` | Vocabulary dari model |
 
 ### Endpoint FastAPI (Port 8000, internal)
@@ -301,8 +317,7 @@ Buka **http://localhost:5173**
 | `POST` | `/predict` | Inferensi model TensorFlow |
 | `GET` | `/vocabulary` | Layer vocabulary dari model |
 
-### Format Request — `POST /api/analyze`
-
+### Format Request — `POST /api/analyses`
 ```json
 {
   "years_code": 3.0,
@@ -322,7 +337,7 @@ Buka **http://localhost:5173**
 | 2 | Sarjana (S1) |
 | 3 | SMA/SMK/Sederajat |
 
-> ⚠️ **Penting:** Kolom opsional seperti `databases` jangan di-set `required` di UI. Jika dikosongkan, backend wajib mengubah nilainya menjadi string `"none"` agar model tidak mengembalikan `NaN`.
+> ⚠️ **Penting:** Kolom opsional seperti `databases` jangan di-set `required` di UI. Jika dikosongkan, backend otomatis mengubah nilainya menjadi string `"none"` agar model tidak mengembalikan `NaN`.
 
 ### Format Response
 
@@ -351,17 +366,19 @@ Buat file `.env` di dalam folder `Fullstack/backend/`:
 ```env
 GEMINI_API_KEY=your_gemini_api_key_here
 DATABASE_URL=postgresql://user:password@localhost:5432/careermatchdb
+JWT_SECRET=your_random_secret_key_here
 ```
 
 ---
 
 ## 🚢 Deployment
 
-Aplikasi di-deploy ke **Railway** menggunakan Docker. Environment variables yang wajib diset:
+Aplikasi di-deploy ke **Railway** menggunakan Docker. Environment variables yang wajib diset di Railway:
 
 ```env
 GEMINI_API_KEY=your_key
 DATABASE_URL=your_postgresql_url
+JWT_SECRET=your_secret_key
 NODE_ENV=production
 ```
 
