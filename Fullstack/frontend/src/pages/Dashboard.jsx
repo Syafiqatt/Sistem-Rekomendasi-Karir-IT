@@ -41,13 +41,38 @@ function Dashboard() {
   ])
 
   const fetchHistory = () => {
-    fetch('/api/history')
-      .then(r => r.json())
-      .then(data => {
-        if (data.status === 'success') setHistory(data.data)
-      })
-      .catch(() => {})
-  }
+  fetch('/api/analyses', {
+    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+  })
+    .then(r => r.json())
+    .then(data => {
+      if (data.status === 'success') {
+        setHistory(data.data)
+        if (!localStorage.getItem('profileData') && data.data.length > 0) {
+          const latest = data.data[0]
+          localStorage.setItem('profileData', JSON.stringify({
+            years_code: latest.years_code,
+            education_level: latest.education_level,
+            all_skills: latest.all_skills,
+            tools: latest.tools,
+            databases: latest.databases,
+          }))
+          let topRecs = []
+            try {
+              topRecs = JSON.parse(latest.top_recommendations || '[]')
+            } catch {
+              topRecs = [{ career: latest.top_career, score: latest.match_score }]
+            }
+            localStorage.setItem('resultData', JSON.stringify({
+              top_recommendations: topRecs,
+              ai_roadmap: latest.ai_roadmap
+            }))
+          window.location.reload()
+        }
+      }
+    })
+    .catch(() => {})
+}
 
   useEffect(() => {
     const profileRaw = localStorage.getItem('profileData')
@@ -115,7 +140,7 @@ function Dashboard() {
     <div className="flex min-h-screen bg-gray-100">
       <Sidebar />
 
-      <main className="flex-1 p-6 pl-20 md:pl-6">
+      <main className="flex-1 p-6 pb-24">
         <div className="flex justify-between items-center mb-6">
           <div>
             <h1 className="text-xl font-semibold text-gray-800">Overview</h1>
@@ -131,7 +156,10 @@ function Dashboard() {
             <button onClick={async () => {
               localStorage.removeItem('profileData')
               localStorage.removeItem('resultData')
-              await fetch('/api/history', { method: 'DELETE' }).catch(() => {})
+              await fetch('/api/analyses', {
+                method: 'DELETE',
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+              }).catch(() => {})
               setProfile(null)
               setTopCareers([])
               setHistory([])
